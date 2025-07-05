@@ -1,0 +1,42 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Now Playing</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      font-size: 24px;
+      color: #ffffff;
+      background-color: transparent;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div id="nowPlaying">Now Playing: Loading...</div>
+
+  <script>
+    async function updateNowPlaying() {
+      try {
+        const response = await fetch("https://public.radio.co/stations/s599983150/now-playing");
+        const data = await response.json();
+
+        const song = data.current_track?.title || "Unavailable";
+        const artist = data.current_track?.artist || "";
+
+        document.getElementById("nowPlaying").innerText = `Now Playing: ${song} - ${artist}`;
+      } catch (error) {
+        document.getElementById("nowPlaying").innerText = "Now Playing: Unavailable";
+      }
+    }
+
+    updateNowPlaying();
+    setInterval(updateNowPlaying, 15000); // refresh every 15 seconds
+  </script>
+</body>
+</html>
